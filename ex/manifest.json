@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "PhishShield AI Detector",
+  "version": "1.0",
+  "description": "Real-time Phishing Website Detection using ML",
+  "permissions": ["activeTab"],
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
