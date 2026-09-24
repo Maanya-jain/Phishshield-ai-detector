@@ -4,8 +4,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   const resultDiv = document.getElementById('result');
   const statusText = document.getElementById('statusText');
   const confText = document.getElementById('confText');
+  const reasonsList = document.getElementById('reasonsList');
 
-  // Currently open tab ka URL uthana
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   const currentUrl = tab ? tab.url : "";
   urlBox.innerText = currentUrl || "No URL detected";
@@ -18,9 +18,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     scanBtn.innerText = "Scanning...";
     scanBtn.disabled = true;
+    reasonsList.innerHTML = "";
 
     try {
-      // Local FastAPI server ko call karna
       const response = await fetch('http://127.0.0.1:8000/predict', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -33,6 +33,15 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (data.is_phishing) {
         resultDiv.className = 'phishing';
         statusText.innerText = '⚠️ WARNING: Phishing Detected!';
+
+        // Reasons display karna
+        if (data.reasons && data.reasons.length > 0) {
+          data.reasons.forEach(r => {
+            const li = document.createElement('li');
+            li.innerText = r;
+            reasonsList.appendChild(li);
+          });
+        }
       } else {
         resultDiv.className = 'safe';
         statusText.innerText = '✅ SAFE: Legit Website';
