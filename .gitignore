@@ -1,3 +1,6 @@
 archive/
 phishing_model.pkl
+.env
+*.zip
+archive.zip
 __pycache__/
